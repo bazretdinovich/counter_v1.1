@@ -5,11 +5,13 @@ type Props = {
     title: string
     callback: () => void
     setMode: boolean
+    errorMode: boolean
+    counterMaxValue?: boolean
 }
-export const Button = ({title, callback, setMode}: Props) => {
+export const Button = ({title, callback, setMode, errorMode, counterMaxValue}: Props) => {
     return (
         <div>
-            <button className={S.button} disabled={!setMode} onClick={callback}>{title}</button>
+            <button className={S.button} disabled={!setMode || errorMode || counterMaxValue} onClick={callback}>{title}</button>
         </div>
     );
 };

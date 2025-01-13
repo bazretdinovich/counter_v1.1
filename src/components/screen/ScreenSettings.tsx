@@ -11,12 +11,20 @@ type Props = {
     callbackSet: (startValue: number, maxValue: number) => void
     setMode: boolean
     setModeCallback: (value: boolean) => void
+    setErrorCallback: (value: boolean) => void
+    errorMode: boolean
 }
 
 export const ScreenSettings = (props: Props) => {
 
     const [maxValue, setMaxValue] = useState<number>(0)
     const [startValue, setStartValue] = useState<number>(0)
+
+    if (maxValue === startValue || startValue > maxValue || startValue < 0) {
+        props.setErrorCallback(true)
+    } else {
+        props.setErrorCallback(false)
+    }
 
     useEffect(() => {
         setMaxValue(props.maxValue)
@@ -41,11 +49,11 @@ export const ScreenSettings = (props: Props) => {
         <div className={styles.screen}>
 
                     <Wrapper classStyle={'wrapperSettingsInput'}>
-                        <Input callback={selMaximumValue} title='max value: ' value={maxValue} typeOfInput={'number'}/>
-                        <Input callback={selStartVal} title='start value: ' value={startValue}  typeOfInput={'number'}/>
+                        <Input errorMode={props.errorMode} callback={selMaximumValue} title='max value: ' value={maxValue} typeOfInput={'number'} />
+                        <Input errorMode={props.errorMode} callback={selStartVal} title='start value: ' value={startValue}  typeOfInput={'number'}/>
                     </Wrapper>
                     <Wrapper classStyle={'wrapperSettingsButton'}>
-                        <Button title={'set'} callback={setMaxAndStartValueHandler} setMode={props.setMode}/>
+                        <Button title={'set'} callback={setMaxAndStartValueHandler} setMode={props.setMode} errorMode={props.errorMode} />
                     </Wrapper>
 
         </div>

@@ -8,17 +8,20 @@ type Props = {
     callbackInc: () => void
     callbackRes: () => void
     setMode: boolean
+    maxValue: number
+    errorMode: boolean
+    counterMaxValue: boolean
 }
 export const ScreenCounter = (props: Props) => {
 
        return (
         <div className={styles.screen}>
                     <Wrapper classStyle={'wrapperDisplayCounter'}>
-                        <Display value={props.value} settingsMode={props.setMode}/>
+                        <Display error={props.errorMode} maxValue={props.maxValue} value={props.value} settingsMode={props.setMode}/>
                     </Wrapper>
                     <Wrapper classStyle={'wrapperButtonCounter'}>
-                        <Button title={'inc'} callback={props.callbackInc} setMode={!props.setMode}/>
-                        <Button title={'reset'} callback={props.callbackRes} setMode={!props.setMode}/>
+                        <Button title={'inc'} callback={props.callbackInc} setMode={!props.setMode} errorMode={props.errorMode} counterMaxValue={props.counterMaxValue}/>
+                        <Button title={'reset'} callback={props.callbackRes} setMode={!props.setMode} errorMode={props.errorMode}/>
                     </Wrapper>
         </div>
     );

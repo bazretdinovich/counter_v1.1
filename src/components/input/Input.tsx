@@ -8,6 +8,7 @@ type Props = {
     typeOfInput: TypeOfInput
     value: number
     callback: (value: number) => void
+    errorMode: boolean
 }
 export const Input = (props: Props) => {
 
@@ -17,7 +18,7 @@ export const Input = (props: Props) => {
 
     return (
         <>
-            <label className={S.label}>{props.title}<input className={S.input} onChange={onchangeHandler} value={props.value} type="number"/></label>
+            <label className={S.label}>{props.title}<input className={S.input} style={props.errorMode ? {borderColor: 'red', backgroundColor: '#e8a0a0'} : {}} onChange={onchangeHandler} value={props.value} type="number"/></label>
         </>
     );
 };
