@@ -6,8 +6,8 @@ import {ScreenCounter} from "./components/screen/ScreenCounter";
 function App() {
 
     const [counter, setCounter] = useState<number>(0)
-    const [maxValueG, setMaxValueG] = useState<number>(0)
-    const [startValueG, setStartValueG] = useState<number>(0)
+    const [maxValueGlob, setMaxValueGlob] = useState<number>(0)
+    const [startValueGlob, setStartValueGglob] = useState<number>(0)
     const [setMode, setSetMode] = useState<boolean>(false)
 
     useEffect(() => {
@@ -15,37 +15,37 @@ function App() {
         let valueStartAsString = localStorage.getItem('startValue')
 
         if (valueMaxAsString) {
-            setMaxValueG(JSON.parse(valueMaxAsString))
+            setMaxValueGlob(JSON.parse(valueMaxAsString))
         }
 
         if (valueStartAsString) {
-            setStartValueG(JSON.parse(valueStartAsString))
+            setStartValueGglob(JSON.parse(valueStartAsString))
         }
     }, [])
 
     useEffect(() => {
-        localStorage.setItem('maxValue', JSON.stringify(maxValueG))
-    }, [maxValueG]);
+        localStorage.setItem('maxValue', JSON.stringify(maxValueGlob))
+    }, [maxValueGlob]);
     useEffect(() => {
-        localStorage.setItem('startValue', JSON.stringify(startValueG))
-    }, [startValueG]);
+        localStorage.setItem('startValue', JSON.stringify(startValueGlob))
+    }, [startValueGlob]);
 
     const setValueToState = (startValue: number, maxValue: number) => {
-        setMaxValueG(maxValue)
-        setStartValueG(startValue)
+        setMaxValueGlob(maxValue)
+        setStartValueGglob(startValue)
         setCounter(startValue)
         setModeStatus(false)
     }
 
     const incCount = () => {
-        if (counter < maxValueG) {
+        if (counter < maxValueGlob) {
             setCounter(counter + 1)
         }
 
     }
 
     const resCount = () => {
-        setCounter(startValueG)
+        setCounter(startValueGlob)
     }
 
     function setModeStatus(value: boolean) {
@@ -54,7 +54,7 @@ function App() {
 
     return (
     <div className="App">
-      <ScreenSettings callbackSet={setValueToState} startValue={startValueG} maxValue={maxValueG} setMode={setMode} setModeCallback={setModeStatus}/>
+      <ScreenSettings callbackSet={setValueToState} startValue={startValueGlob} maxValue={maxValueGlob} setMode={setMode} setModeCallback={setModeStatus}/>
       <ScreenCounter value={counter} callbackInc={incCount} callbackRes={resCount} setMode={setMode}/>
     </div>
   );
