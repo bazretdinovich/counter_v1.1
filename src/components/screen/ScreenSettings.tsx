@@ -1,86 +1,52 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Screen.module.css';
 import {Input} from "../input/Input";
-import {Display} from "../display/Display";
 import {Wrapper} from "../wrapper/Wrapper";
 import {Button} from "../button/Button";
 
-type typeScreen = 'counter' | 'settings'
 
-type ScreenConfigProps = {
-    type: typeScreen
+type Props = {
+    maxValue: number
+    startValue: number
+    callbackSet: (startValue: number, maxValue: number) => void
+    setMode: boolean
+    setModeCallback: (value: boolean) => void
 }
 
-export const Screen = (props: ScreenConfigProps) => {
+export const ScreenSettings = (props: Props) => {
 
-    const [counter, setCounter] = useState<number>(0)
     const [maxValue, setMaxValue] = useState<number>(0)
     const [startValue, setStartValue] = useState<number>(0)
-    const [settingsModeOff, setSettingsMode] = useState<boolean>(true)
 
     useEffect(() => {
-        let valueMaxAsString = localStorage.getItem('maxValue')
-        let valueStartAsString = localStorage.getItem('startValue')
+        setMaxValue(props.maxValue)
+        setStartValue(props.startValue)
+    }, []);
 
-        if (valueMaxAsString) {
-            setMaxValue(JSON.parse(valueMaxAsString))
-        }
-
-        if (valueStartAsString) {
-            setStartValue(JSON.parse(valueStartAsString))
-        }
-    }, [])
-
-    const setValueInLocalStore = () => {
-        localStorage.setItem('maxValue', JSON.stringify(maxValue))
-        localStorage.setItem('startValue', JSON.stringify(startValue))
-        setSettingsMode(true)
-    }
-
-    const setMaxValueToState = (value: number) => {
+    const selMaximumValue = (value: number) => {
         setMaxValue(value)
-        setSettingsMode(false)
+        props.setModeCallback(true)
     }
 
-    const setStartValuetoState = (value: number) => {
+    const selStartVal = (value: number) => {
         setStartValue(value)
-        setSettingsMode(false)
+        props.setModeCallback(true)
     }
 
-    const incCounter = () => {
-        setCounter(counter + 1)
-    }
-
-    const resetCounter = () => {
-        setCounter(startValue)
+    const setMaxAndStartValueHandler = () => {
+        props.callbackSet(startValue, maxValue)
     }
 
     return (
         <div className={styles.screen}>
-            {props.type === 'settings' ? (
-                <>
-                    <Wrapper direction={'column'}>
-                        <Input callback={setMaxValueToState} title='max value: ' value={maxValue} typeOfInput={'number'}/>
-                        <Input callback={setStartValuetoState} title='start value: ' value={startValue}  typeOfInput={'number'}/>
-                    </Wrapper>
-                    <Wrapper direction={'column'}>
-                        <Button title={'set'} callback={setValueInLocalStore} disabled={settingsModeOff}/>
-                    </Wrapper>
 
-
-                </>
-            ) : (
-                <>
-                <Wrapper direction={'row'}>
-                        <Display value={counter} settingsModeOff={settingsModeOff}/>
-                </Wrapper>
-                    <Wrapper direction={'row'}>
-                        <Button title={'inc'} callback={incCounter}/>
-                        <Button title={'reset'} callback={resetCounter}/>
+                    <Wrapper classStyle={'wrapperSettingsInput'}>
+                        <Input callback={selMaximumValue} title='max value: ' value={maxValue} typeOfInput={'number'}/>
+                        <Input callback={selStartVal} title='start value: ' value={startValue}  typeOfInput={'number'}/>
                     </Wrapper>
-                </>
-            )}
-
+                    <Wrapper classStyle={'wrapperSettingsButton'}>
+                        <Button title={'set'} callback={setMaxAndStartValueHandler} setMode={props.setMode}/>
+                    </Wrapper>
 
         </div>
     );

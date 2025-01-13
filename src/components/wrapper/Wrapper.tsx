@@ -2,13 +2,22 @@ import React from 'react';
 import styles from "./Wrapper.module.css";
 
 type Props = {
-    direction: 'column' | 'row'
+    classStyle: string
     children: React.ReactNode
 }
 
-export const Wrapper = ({children, direction}: Props) => {
+export const Wrapper = ({children, classStyle}: Props) => {
+
     return (
-        <div className={styles.wrapper} style={{flexDirection: direction}}>
+        <div className={classStyle === 'wrapperSettingsInput'
+                        ? styles.wrapperSettingsInput
+                        : classStyle === 'wrapperSettingsButton'
+                        ? styles.wrapperSettingsButton
+                        : classStyle === 'wrapperDisplayCounter'
+                        ? styles.wrapperDisplayCounter
+                        : classStyle === 'wrapperButtonCounter'
+                        ? styles.wrapperButtonCounter
+                        : ''}>
             {children}
         </div>
     );
